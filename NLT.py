@@ -26,25 +26,25 @@ logExt = ['.log', '.log.1', '.log.2', '.log.3']
 hostsLoc = 'C:\Windows\System32\drivers\etc\HOSTS'
 hostsLocTest = '.\hosts\HOSTS'
 
-betaHostsOn = ['8.31.102.78 accounts-beta.nexon.net\n',
-               '8.31.102.78 games-beta.nexon.net\n',
-               '8.31.102.78 api-beta.nexon.net\n']
+betaHostsOn = ['*.*.*.* accounts-beta.nexon.net\n',
+               '*.*.*.* games-beta.nexon.net\n',
+               '*.*.*.* api-beta.nexon.net\n']
 
-betaHostsOff = ['#8.31.102.78 accounts-beta.nexon.net\n',
-                '#8.31.102.78 games-beta.nexon.net\n',
-                '#8.31.102.78 api-beta.nexon.net\n']
+betaHostsOff = ['#*.*.*.* accounts-beta.nexon.net\n',
+                '#*.*.*.* games-beta.nexon.net\n',
+                '#*.*.*.* api-beta.nexon.net\n']
 
-stageHostsOn = ['208.85.109.173 games-stage.nexon.net\n',
-                '208.85.109.173 accounts-stage.nexon.net\n',
-                '208.85.109.173 api-stage.nexon.net\n']
+stageHostsOn = ['*.*.*.* games-stage.nexon.net\n',
+                '*.*.*.* accounts-stage.nexon.net\n',
+                '*.*.*.* api-stage.nexon.net\n']
 
-stageHostsOff = ['#208.85.109.173 games-stage.nexon.net\n',
-                 '#208.85.109.173 accounts-stage.nexon.net\n',
-                 '#208.85.109.173 api-stage.nexon.net\n']
+stageHostsOff = ['#*.*.*.* games-stage.nexon.net\n',
+                 '#*.*.*.* accounts-stage.nexon.net\n',
+                 '#*.*.*.* api-stage.nexon.net\n']
 
-cdnHostOn = '208.85.109.165 cdn.nexon.net\n'
+cdnHostOn = '*.*.*.* cdn.nexon.net\n'
 
-cdnHostOff = '#208.85.109.165 cdn.nexon.net\n'
+cdnHostOff = '#*.*.*.* cdn.nexon.net\n'
 
 aboutLoc = '.\hosts\ABOUT'
 logLoc = '.\debug.log'
