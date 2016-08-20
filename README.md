@@ -3,6 +3,11 @@ NxA Launcher Tool Repo
 
 Internal Tool for changing NxL environments
 
-Compile with PyInstaller using NLT.spec
+-Install- 
+1.  Obtain correct IP addresses for environment
+2.  Compile with PyInstaller using NLT.spec
+3.  ?????
+4.  PROFIT!
 
-README can be found on NxA Confluence page
+
+Full README can be found on NxA Confluence page
