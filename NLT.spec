@@ -4,9 +4,9 @@ block_cipher = None
 
 
 a = Analysis(['NLT.py'],
-             pathex=['C:\\Users\\ghardin\\PycharmProjects\\EnvChanger'],
-             binaries=None,
-             datas=None,
+             pathex=['E:\\Users\\ghardin\\PycharmProjects\\EnvChanger'],
+             binaries=[],
+             datas=[],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
@@ -25,9 +25,8 @@ exe = EXE(pyz,
           debug=False,
           strip=False,
           upx=True,
-          console=False , uac_admin=True, icon='logo.ico')
+          console=False, uac_admin=True, icon='logo.ico' )
 coll = COLLECT(exe,
                strip=False,
                upx=True,
-               name='NLT'
-)
+               name='NLT')

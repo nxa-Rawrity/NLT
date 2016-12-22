@@ -26,30 +26,42 @@ logExt = ['.log', '.log.1', '.log.2', '.log.3']
 hostsLoc = 'C:\Windows\System32\drivers\etc\HOSTS'
 hostsLocTest = '.\hosts\HOSTS'
 
-betaHostsOn = ['*.*.*.* accounts-beta.nexon.net\n',
-               '*.*.*.* games-beta.nexon.net\n',
-               '*.*.*.* api-beta.nexon.net\n']
+##### BETA and STAGING No longer require host settings for extenal machines.
+##### '#' has been added to betaHostsOn and stageHostsOn.  Remove the '#' to enable host
+betaHostsOn = ['#8.31.102.78 accounts-beta.nexon.net\n',
+               '#8.31.102.78 games-beta.nexon.net\n',
+               '#8.31.102.78 api-beta.nexon.net\n']
 
-betaHostsOff = ['#*.*.*.* accounts-beta.nexon.net\n',
-                '#*.*.*.* games-beta.nexon.net\n',
-                '#*.*.*.* api-beta.nexon.net\n']
+betaHostsOff = ['#8.31.102.78 accounts-beta.nexon.net\n',
+                '#8.31.102.78 games-beta.nexon.net\n',
+                '#8.31.102.78 api-beta.nexon.net\n']
 
-stageHostsOn = ['*.*.*.* games-stage.nexon.net\n',
-                '*.*.*.* accounts-stage.nexon.net\n',
-                '*.*.*.* api-stage.nexon.net\n']
+stageHostsOn = ['#208.85.109.173 games-stage.nexon.net\n',
+                '#208.85.109.173 accounts-stage.nexon.net\n',
+                '#208.85.109.173 api-stage.nexon.net\n']
 
-stageHostsOff = ['#*.*.*.* games-stage.nexon.net\n',
-                 '#*.*.*.* accounts-stage.nexon.net\n',
-                 '#*.*.*.* api-stage.nexon.net\n']
+stageHostsOff = ['#208.85.109.173 games-stage.nexon.net\n',
+                 '#208.85.109.173 accounts-stage.nexon.net\n',
+                 '#208.85.109.173 api-stage.nexon.net\n']
 
-cdnHostOn = '*.*.*.* cdn.nexon.net\n'
+cdnHostOn = '208.85.109.165 cdn.nexon.net\n'
 
-cdnHostOff = '#*.*.*.* cdn.nexon.net\n'
+cdnHostOff = '#208.85.109.165 cdn.nexon.net\n'
 
 aboutLoc = '.\hosts\ABOUT'
 logLoc = '.\debug.log'
+
+appdataLoc = os.getenv('APPDATA')
+appdataPath = os.path.join(appdataLoc,'NexonLauncher')
+eulafile = 'eula.db'
+
+utilLoc ='.\util'
+dfcLoc = os.path.join(utilLoc, 'DFC.bat')
+
 tempContent = 'blank'
 showAbout = False
+fontPath = '.\css\KlavikaNX-Bold.otf'
+showVersion = True
 
 logging.info('Variables Declared')
 
@@ -94,13 +106,18 @@ class Ui_Form(QtGui.QWidget):
     def setupUi(self, Form):
         logging.info('Setting up UI')
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(354, 200)
-        Form.setMinimumSize(QtCore.QSize(354,200))
-        Form.setMaximumSize(QtCore.QSize(354, 500))
+        Form.resize(354, 189)
+        Form.setMinimumSize(QtCore.QSize(354, 189))
+        Form.setMaximumSize(QtCore.QSize(354, 189))
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Century Gothic"))
         font.setPointSize(8)
         Form.setFont(font)
+
+        nxFont = QtGui.QFontDatabase.addApplicationFont(fontPath)
+
+        if nxFont < 0:
+            logging.info('unable to load font')
 
         logging.info('Obtaining CSS')
         css = './css/darkorange.stylesheet.txt'
@@ -113,12 +130,13 @@ class Ui_Form(QtGui.QWidget):
         self.MainSection = QtGui.QVBoxLayout()
         self.MainSection.setObjectName(_fromUtf8("MainSection"))
         self.Title_LBL = QtGui.QLabel(Form)
-        font = QtGui.QFont()
-        font.setFamily(_fromUtf8("Century Gothic"))
-        font.setPointSize(20)
-        self.Title_LBL.setFont(font)
+        titleFont = QtGui.QFont()
+        titleFont.setFamily("Century Gothic")
+        titleFont.setPointSize(20)
+        self.Title_LBL.setFont(titleFont)
         self.Title_LBL.setAlignment(QtCore.Qt.AlignCenter)
         self.Title_LBL.setObjectName(_fromUtf8("Title_LBL"))
+        self.Title_LBL.setFixedSize(QtCore.QSize(334,33))
         self.MainSection.addWidget(self.Title_LBL)
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
         self.horizontalLayout_2.setContentsMargins(48, -1, -1, -1)
@@ -176,24 +194,28 @@ class Ui_Form(QtGui.QWidget):
         font.setPointSize(8)
         self.Test_BTN.setFont(font)
         self.Test_BTN.setObjectName(_fromUtf8("Test_BTN"))
+        self.Test_BTN.setFixedSize(QtCore.QSize(80,22))
         self.horizontalLayout_3.addWidget(self.Test_BTN)
         self.Beta_BTN = QtGui.QPushButton(Form)
         font = QtGui.QFont()
         font.setPointSize(8)
         self.Beta_BTN.setFont(font)
         self.Beta_BTN.setObjectName(_fromUtf8("Beta_BTN"))
+        self.Beta_BTN.setFixedSize(QtCore.QSize(80,22))
         self.horizontalLayout_3.addWidget(self.Beta_BTN)
         self.Stage_BTN = QtGui.QPushButton(Form)
         font = QtGui.QFont()
         font.setPointSize(8)
         self.Stage_BTN.setFont(font)
         self.Stage_BTN.setObjectName(_fromUtf8("Stage_BTN"))
+        self.Stage_BTN.setFixedSize(QtCore.QSize(80,22))
         self.horizontalLayout_3.addWidget(self.Stage_BTN)
         self.Live_BTN = QtGui.QPushButton(Form)
         font = QtGui.QFont()
         font.setPointSize(8)
         self.Live_BTN.setFont(font)
         self.Live_BTN.setObjectName(_fromUtf8("Live_BTN"))
+        self.Live_BTN.setFixedSize(QtCore.QSize(80,22))
         self.horizontalLayout_3.addWidget(self.Live_BTN)
         self.verticalLayout_2.addLayout(self.horizontalLayout_3)
         self.horizontalLayout_4 = QtGui.QHBoxLayout()
@@ -210,12 +232,12 @@ class Ui_Form(QtGui.QWidget):
         self.ClearLog_BOX.setFont(font)
         self.ClearLog_BOX.setObjectName(_fromUtf8("ClearLog_BOX"))
         self.horizontalLayout_4.addWidget(self.ClearLog_BOX)
-        self.Location_BTN = QtGui.QPushButton(Form)
-        font = QtGui.QFont()
-        font.setPointSize(8)
-        self.Location_BTN.setFont(font)
-        self.Location_BTN.setObjectName(_fromUtf8("Location_BTN"))
-        self.horizontalLayout_4.addWidget(self.Location_BTN)
+        self.Location_DRP = QtGui.QComboBox(Form)
+        self.Location_DRP.setObjectName(_fromUtf8("Location_DRP"))
+        self.Location_DRP.addItem(_fromUtf8(""))
+        self.Location_DRP.addItem(_fromUtf8(""))
+        self.Location_DRP.addItem(_fromUtf8(""))
+        self.horizontalLayout_4.addWidget(self.Location_DRP)
         self.verticalLayout_2.addLayout(self.horizontalLayout_4)
         self.MainSection.addLayout(self.verticalLayout_2)
         self.verticalLayout_4.addLayout(self.MainSection)
@@ -233,51 +255,127 @@ class Ui_Form(QtGui.QWidget):
         self.AdvSettings_BOX = QtGui.QCheckBox(Form)
         self.AdvSettings_BOX.setObjectName(_fromUtf8("checkBox"))
         self.horizontalLayout.addWidget(self.AdvSettings_BOX)
-        self.dropBox_DRP = QtGui.QComboBox(Form)
-        self.dropBox_DRP.setAcceptDrops(False)
-        self.dropBox_DRP.setEditable(False)
-        self.dropBox_DRP.setObjectName(_fromUtf8("comboBox"))
-        self.dropBox_DRP.addItem('hosts')
-        self.dropBox_DRP.addItem('settings')
-        self.dropBox_DRP.addItem('rt_log')
-        self.dropBox_DRP.addItem('rt_debug')
-        self.dropBox_DRP.addItem('update_debug')
-        self.dropBox_DRP.addItem('nlt_debug')
-        self.horizontalLayout.addWidget(self.dropBox_DRP)
-        self.Apply_BTN = QtGui.QPushButton(Form)
-        self.Apply_BTN.setMaximumSize(QtCore.QSize(100, 16777215))
-        self.Apply_BTN.setObjectName(_fromUtf8("pushButton_2"))
-        self.horizontalLayout.addWidget(self.Apply_BTN)
         self.HostsSection.addLayout(self.horizontalLayout)
-        self.hostsTextEdit = QtGui.QPlainTextEdit(Form)
+        self.advSettingsTabs = QtGui.QTabWidget(Form)
+        self.advSettingsTabs.setTabPosition(QtGui.QTabWidget.North)
+        self.advSettingsTabs.setTabShape(QtGui.QTabWidget.Rounded)
+        self.advSettingsTabs.setObjectName(_fromUtf8("advSettingsTabs"))
+        self.files = QtGui.QWidget()
+        self.files.setObjectName(_fromUtf8("files"))
+        self.hostsTextEdit = QtGui.QPlainTextEdit(self.files)
         self.hostsTextEdit.setEnabled(True)
+        self.hostsTextEdit.setGeometry(QtCore.QRect(0, 40, 329, 270))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.hostsTextEdit.sizePolicy().hasHeightForWidth())
         self.hostsTextEdit.setSizePolicy(sizePolicy)
-        self.hostsTextEdit.setMaximumSize(QtCore.QSize(354, 400))
+        self.hostsTextEdit.setMaximumSize(QtCore.QSize(329, 270))
+        self.hostsTextEdit.setAutoFillBackground(True)
         self.hostsTextEdit.setLineWrapMode(QtGui.QPlainTextEdit.NoWrap)
         self.hostsTextEdit.setBackgroundVisible(True)
+        self.hostsTextEdit.setCenterOnScroll(True)
         self.hostsTextEdit.setObjectName(_fromUtf8("hostsTextEdit"))
-        self.HostsSection.addWidget(self.hostsTextEdit)
-
-        self.label = QtGui.QLabel(Form)
-        self.label.setMaximumSize(QtCore.QSize(354, 16))
-        self.label.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label.setObjectName(_fromUtf8("label"))
-        self.HostsSection.addWidget(self.label)
+        self.adjFiles_DRP = QtGui.QComboBox(self.files)
+        self.adjFiles_DRP.setGeometry(QtCore.QRect(0, 10, 131, 21))
+        self.adjFiles_DRP.setAcceptDrops(False)
+        self.adjFiles_DRP.setEditable(False)
+        self.adjFiles_DRP.setObjectName(_fromUtf8("adjFiles_DRP"))
+        self.adjFiles_DRP.addItem(_fromUtf8(""))
+        self.adjFiles_DRP.addItem(_fromUtf8(""))
+        self.adjFiles_DRP.addItem(_fromUtf8(""))
+        self.Apply_BTN = QtGui.QPushButton(self.files)
+        self.Apply_BTN.setGeometry(QtCore.QRect(230, 10, 100, 22))
+        self.Apply_BTN.setMaximumSize(QtCore.QSize(100, 16777215))
+        self.Apply_BTN.setObjectName(_fromUtf8("Apply_BTN"))
+        self.advSettingsTabs.addTab(self.files, _fromUtf8(""))
+        self.logs = QtGui.QWidget()
+        self.logs.setObjectName(_fromUtf8("logs"))
+        self.logs_DRP = QtGui.QComboBox(self.logs)
+        self.logs_DRP.setGeometry(QtCore.QRect(0, 10, 151, 22))
+        self.logs_DRP.setObjectName(_fromUtf8("logs_DRP"))
+        self.logs_DRP.addItem(_fromUtf8(""))
+        self.logs_DRP.addItem(_fromUtf8(""))
+        self.logs_DRP.addItem(_fromUtf8(""))
+        self.logs_DRP.addItem(_fromUtf8(""))
+        self.logViewer = QtGui.QPlainTextEdit(self.logs)
+        self.logViewer.setGeometry(QtCore.QRect(0, 40, 329, 270))
+        self.logViewer.setMaximumSize(QtCore.QSize(329,270))
+        self.logViewer.setObjectName(_fromUtf8("Log Viewer"))
+        self.advSettingsTabs.addTab(self.logs, _fromUtf8(""))
+        self.utils = QtGui.QWidget()
+        self.utils.setObjectName(_fromUtf8("utils"))
+        self.utilitiesSpace = QtGui.QScrollArea(self.utils)
+        self.utilitiesSpace.setGeometry(QtCore.QRect(0, 0, 329, 305))
+        self.utilitiesSpace.setWidgetResizable(True)
+        self.utilitiesSpace.setObjectName(_fromUtf8("utilitiesSpace"))
+        self.utilitiesContents = QtGui.QWidget()
+        self.utilitiesContents.setGeometry(QtCore.QRect(0, 0, 329, 305))
+        self.utilitiesContents.setObjectName(_fromUtf8("utilitiesContents"))
+        self.line_2 = QtGui.QFrame(self.utilitiesContents)
+        self.line_2.setGeometry(QtCore.QRect(10, 80, 311, 20))
+        self.line_2.setFrameShape(QtGui.QFrame.HLine)
+        self.line_2.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line_2.setObjectName(_fromUtf8("line_2"))
+        self.dfcTitle_LBL = QtGui.QLabel(self.utilitiesContents)
+        self.dfcTitle_LBL.setGeometry(QtCore.QRect(10, 10, 121, 16))
+        self.dfcTitle_LBL.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.dfcTitle_LBL.setObjectName(_fromUtf8("dfcTitle_LBL"))
+        self.CreateDummy_BTN = QtGui.QPushButton(self.utilitiesContents)
+        self.CreateDummy_BTN.setGeometry(QtCore.QRect(10, 30, 311, 23))
+        self.CreateDummy_BTN.setObjectName(_fromUtf8("CreateDummy_BTN"))
+        self.refreshSpace_BTN = QtGui.QPushButton(self.utilitiesContents)
+        self.refreshSpace_BTN.setGeometry(QtCore.QRect(10, 60, 311, 23))
+        self.refreshSpace_BTN.setObjectName(_fromUtf8("refreshSpace_BTN"))
+        self.Free_LBL = QtGui.QLabel(self.utilitiesContents)
+        self.Free_LBL.setGeometry(QtCore.QRect(280, 10, 41, 20))
+        self.Free_LBL.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.Free_LBL.setObjectName(_fromUtf8("Free_LBL"))
+        self.gbCount_LBL = QtGui.QLabel(self.utilitiesContents)
+        self.gbCount_LBL.setGeometry(QtCore.QRect(230, 10, 41, 20))
+        self.gbCount_LBL.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.gbCount_LBL.setObjectName(_fromUtf8("gbCount_LBL"))
+        self.utilitiesSpace.setWidget(self.utilitiesContents)
+        self.advSettingsTabs.addTab(self.utils, _fromUtf8(""))
+        self.automation = QtGui.QWidget()
+        self.automation.setObjectName(_fromUtf8("automation"))
+        self.LBL_zzz_image = QtGui.QLabel(self.automation)
+        self.LBL_zzz_image.setGeometry(QtCore.QRect(100, 30, 131, 121))
+        self.LBL_zzz_image.setAutoFillBackground(False)
+        self.LBL_zzz_image.setText(_fromUtf8(""))
+        self.LBL_zzz_image.setPixmap(QtGui.QPixmap(_fromUtf8("./css/zzz.jpg")))
+        self.LBL_zzz_image.setScaledContents(True)
+        self.LBL_zzz_image.setObjectName(_fromUtf8("LBL_zzz_image"))
+        self.LBL_comingSoonText = QtGui.QLabel(self.automation)
+        self.LBL_comingSoonText.setGeometry(QtCore.QRect(70, 160, 201, 31))
+        font = QtGui.QFont()
+        font.setPointSize(15)
+        self.LBL_comingSoonText.setFont(font)
+        self.LBL_comingSoonText.setText(_fromUtf8("Under Construction..."))
+        self.LBL_comingSoonText.setScaledContents(False)
+        self.LBL_comingSoonText.setObjectName(_fromUtf8("LBL_comingSoonText"))
+        self.advSettingsTabs.addTab(self.automation, _fromUtf8(""))
+        self.HostsSection.addWidget(self.advSettingsTabs)
+        self.version_LBL = QtGui.QLabel(Form)
+        self.version_LBL.setMaximumSize(QtCore.QSize(354, 16))
+        self.version_LBL.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.version_LBL.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.version_LBL.setObjectName(_fromUtf8("version_LBL"))
+        self.HostsSection.addWidget(self.version_LBL)
         self.verticalLayout_4.addLayout(self.HostsSection)
 
         self.retranslateUi(Form)
-        self.dropBox_DRP.setCurrentIndex(0)
+        self.advSettingsTabs.setCurrentIndex(0)
+        self.adjFiles_DRP.setCurrentIndex(0)
+        self.logs_DRP.setCurrentIndex(0)
+        self.advSettingsTabs.setDisabled(True)
+        self.advSettingsTabs.setVisible(False)
         QtCore.QMetaObject.connectSlotsByName(Form)
-        self.hostsTextEdit.setDisabled(True)
-        self.hostsTextEdit.setVisible(False)
-        self.label.setVisible(False)
-        self.dropBox_DRP.setDisabled(True)
-        self.Apply_BTN.setDisabled(True)
+        #self.hostsTextEdit.setDisabled(False)
+        #self.hostsTextEdit.setVisible(True)
+        self.version_LBL.setVisible(False)
+        #self.adjFiles_DRP.setDisabled(True)
+        #self.Apply_BTN.setDisabled(True)
         logging.info('UI Setup Completed')
 
     def retranslateUi(self, Form):
@@ -285,6 +383,7 @@ class Ui_Form(QtGui.QWidget):
         Form.setWindowTitle(_translate("Form", "NLT", None))
         self.Title_LBL.setText(_translate("Form", "Nexon Launcher Tool", None))
         self.EnvText_LBL.setText(_translate("Form", "Current Environment:  ", None))
+        self.Env_LBL.setText(_translate("Form", "ENV", None))
         self.Restart_BTN.setText(_translate("Form", "R", None))
         self.EnvSelect_LBL.setText(_translate("Form", "Switch Environment", None))
         self.Test_BTN.setText(_translate("Form", "Test", None))
@@ -293,16 +392,36 @@ class Ui_Form(QtGui.QWidget):
         self.Live_BTN.setText(_translate("Form", "Live", None))
         self.ExtMachine_BOX.setText(_translate("Form", "Ext. Machine", None))
         self.ClearLog_BOX.setText(_translate("Form", "Clear Logs", None))
-        self.Location_BTN.setText(_translate("Form", "Open File Location", None))
+        self.Location_DRP.setItemText(0, _translate("Form", "Select Location...", None))
+        self.Location_DRP.setItemText(1, _translate("Form", "Install Location", None))
+        self.Location_DRP.setItemText(2, _translate("Form", "APPDATA Folder", None))
         self.AdvSettings_BOX.setText(_translate("Form", "Adv Settings", None))
-        self.dropBox_DRP.setItemText(0, _translate("Form", "Host Settings", None))
-        self.dropBox_DRP.setItemText(1, _translate("Form", "Settings.conf", None))
-        self.dropBox_DRP.setItemText(2, _translate("Form", "Runtime Log", None))
-        self.dropBox_DRP.setItemText(3, _translate("Form", "Runtime Debug", None))
-        self.dropBox_DRP.setItemText(4, _translate("Form", "Updater Debug", None))
-        self.dropBox_DRP.setItemText(5, _translate("Form", "NLT Debug Log", None))
+        self.adjFiles_DRP.setItemText(0, _translate("Form", "Host Settings", None))
+        self.adjFiles_DRP.setItemText(1, _translate("Form", "Settings.conf", None))
+        self.adjFiles_DRP.setItemText(2, _translate("Form", "EULA.db", None))
         self.Apply_BTN.setText(_translate("Form", "Apply", None))
-        self.label.setText(_translate("Form", "v.04", None))
+        self.advSettingsTabs.setTabText(self.advSettingsTabs.indexOf(self.files), _translate("Form", "Adjustable Files", None))
+        self.advSettingsTabs.setTabToolTip(self.advSettingsTabs.indexOf(self.files), _translate("Form", "Adjust HOSTS file, settings.conf, and other files", None))
+        self.logs_DRP.setItemText(0, _translate("Form", "Runtime Log", None))
+        self.logs_DRP.setItemText(1, _translate("Form", "Runtime Debug", None))
+        self.logs_DRP.setItemText(2, _translate("Form", "Updater Debug", None))
+        self.logs_DRP.setItemText(3, _translate("Form", "NLT Debug", None))
+        self.advSettingsTabs.setTabText(self.advSettingsTabs.indexOf(self.logs), _translate("Form", "Logs", None))
+        self.advSettingsTabs.setTabToolTip(self.advSettingsTabs.indexOf(self.logs), _translate("Form", "View log files", None))
+        self.dfcTitle_LBL.setToolTip(_translate("Form", "Fills up HD with an empty file.  Use to test Hard Drive Space handling.", None))
+        self.dfcTitle_LBL.setText(_translate("Form", "Dummy File Creator", None))
+        self.CreateDummy_BTN.setToolTip(_translate("Form", "Creates a Dummy file that fills up the Hard Drive.  Be sure to remove when finished.", None))
+        self.CreateDummy_BTN.setText(_translate("Form", "Run Utility", None))
+        self.refreshSpace_BTN.setToolTip(_translate("Form", "", None))
+        self.refreshSpace_BTN.setText(_translate("Form", "Calculate Free Space", None))
+        self.Free_LBL.setToolTip(_translate("Form", "Fills up HD with an empty file.  Use to test Hard Drive Space handling.", None))
+        self.Free_LBL.setText(_translate("Form", "GB Free", None))
+        self.gbCount_LBL.setToolTip(_translate("Form", "Fills up HD with an empty file.  Use to test Hard Drive Space handling.", None))
+        self.gbCount_LBL.setText(_translate("Form", "0", None))
+        self.advSettingsTabs.setTabText(self.advSettingsTabs.indexOf(self.utils), _translate("Form", "Utilities", None))
+        self.advSettingsTabs.setTabToolTip(self.advSettingsTabs.indexOf(self.utils), _translate("Form", "Utilities to help you out", None))
+        self.advSettingsTabs.setTabText(self.advSettingsTabs.indexOf(self.automation), _translate("Form", "Automation", None))
+        self.version_LBL.setText(_translate("Form", "v.05", None))
 
 #########------- START BINDING ----------########
         self.Env_LBL.setText(_translate("Form", self.SetEnvLabel(os.path.join(pathname[0], 'settings.conf')), None))
@@ -314,17 +433,18 @@ class Ui_Form(QtGui.QWidget):
         self.Beta_BTN.clicked.connect(lambda: self.EnvLabelDynamic(self.Env_LBL))
         self.Live_BTN.clicked.connect(self.SetLiveEnv)
         self.Live_BTN.clicked.connect(lambda: self.EnvLabelDynamic(self.Env_LBL))
-        self.Location_BTN.clicked.connect(self.OpenLocation)
+        self.Location_DRP.activated['QString'].connect(self.OpenLocation)
         self.ExtMachine_BOX.stateChanged.connect(lambda: self.DisableTestButton(self.Test_BTN))
         self.Restart_BTN.clicked.connect(self.RestartLauncher)
-        self.AdvSettings_BOX.stateChanged.connect(lambda: self.DisplayEditor(self.hostsTextEdit,
-                                                                             Form,
-                                                                             self.label,
-                                                                             self.dropBox_DRP,
-                                                                             self.Apply_BTN))
-        self.dropBox_DRP.activated['QString'].connect(self.DisplayFile)
-        self.Apply_BTN.clicked.connect(lambda: self.ApplyTextToFile(self.dropBox_DRP.currentIndex(),
+        self.AdvSettings_BOX.stateChanged.connect(lambda: self.DisplayTabs(self.advSettingsTabs,Form, self.version_LBL))
+        self.adjFiles_DRP.activated['QString'].connect(self.DisplayFile)
+        self.logs_DRP.activated['QString'].connect(self.DisplayFile)
+        self.Apply_BTN.clicked.connect(lambda: self.ApplyTextToFile(self.adjFiles_DRP.currentIndex(),
                                                                     self.hostsTextEdit))
+        self.CreateDummy_BTN.clicked.connect(self.RunDFC)
+        self.CreateDummy_BTN.clicked.connect(lambda: self.SpaceLabelDynamic(self.gbCount_LBL))
+        self.refreshSpace_BTN.clicked.connect(lambda: self.SpaceLabelDynamic(self.gbCount_LBL))
+        self.version_LBL.mousePressEvent = self.AboutInfo
 
         logging.info('UI Elements Properly Bound')
         self.Startup()
@@ -335,6 +455,15 @@ class Ui_Form(QtGui.QWidget):
         self.EnableDebug()
         self.CopyLogs()
         logging.info('### Startup Complete ###')
+        self.SpaceLabelDynamic(self.gbCount_LBL)
+        logging.info('# HD Space Scan Complete #')
+
+    def AboutInfo(self, event):
+        if self.version_LBL.text() == 'v.05':
+            self.version_LBL.setText('Created by Gerald Hardin 2016.  ghardin@nexon.net')
+        else:
+            self.version_LBL.setText('v.05')
+
 
     def ScanHosts(self):
         logging.info('### Starting Host Scan ###')
@@ -362,6 +491,7 @@ class Ui_Form(QtGui.QWidget):
             for line in lines:
                 line.rstrip()
                 ###### Scan for Beta Hosts #######
+
                 if betaHostsOff[0] in line:
                     betaOff0Found = True
 
@@ -378,7 +508,7 @@ class Ui_Form(QtGui.QWidget):
                     betaOn1Found = True
 
                 if betaHostsOn[2] in line:
-                    betaOn2Found = True
+                   betaOn2Found = True
 
 
                 ###### Scan for Staging Hosts #######
@@ -415,6 +545,7 @@ class Ui_Form(QtGui.QWidget):
                     h.write(line)
 
             ####### Add host Settings if not already found #######
+
             ##### Add Beta hosts if not already found #####
             if not betaOff0Found and not betaOn0Found:
                 h.write('\n')
@@ -479,8 +610,12 @@ class Ui_Form(QtGui.QWidget):
                     if betaHostsOff[2] in line:
                         h.write(betaHostsOn[2] if betaHostsOff[2] in line else line)
                         found = True
+
+
+                    ####### enable CDN host ########
                     if cdnHostOff in line:
                         line = line.replace(cdnHostOff, cdnHostOn)
+
                     ######## disables Staging Hosts ######
                     if stageHostsOn[0] in line:
                         h.write(stageHostsOff[0] if stageHostsOn[0] in line else line)
@@ -513,8 +648,10 @@ class Ui_Form(QtGui.QWidget):
                     if betaHostsOn[2] in line:
                         h.write(betaHostsOff[2] if betaHostsOn[2] in line else line)
                         found = True
+                    ####### enable CDN host ########
                     if cdnHostOff in line:
                         line = line.replace(cdnHostOff, cdnHostOn)
+
                     ######## Enable Staging Hosts ######
                     if stageHostsOff[0] in line:
                         h.write(stageHostsOn[0] if stageHostsOff[0] in line else line)
@@ -547,9 +684,12 @@ class Ui_Form(QtGui.QWidget):
                     if betaHostsOn[2] in line:
                         h.write(betaHostsOff[2] if betaHostsOn[2] in line else line)
                         found = True
+
+                    ####### enable CDN host ########
                     if cdnHostOn in line:
                         h.write(cdnHostOff if cdnHostOn in line else line)
                         found = True
+
                     ######## Disable Staging Hosts ######
                     if stageHostsOn[0] in line:
                         h.write(stageHostsOff[0] if stageHostsOn[0] in line else line)
@@ -581,64 +721,91 @@ class Ui_Form(QtGui.QWidget):
                 self.Apply_BTN.setDisabled(True)
                 self.hostsTextEdit.setPlainText('No settings.conf file found')
 
+        if text == 'EULA.db':
+            try:
+                file = open(os.path.join(appdataPath, eulafile)).read()
+                self.hostsTextEdit.setPlainText(file)
+            except:
+                logging.info('EULA.db not found')
+                self.hostsTextEdit.setPlainText('EULA not found')
+
         if text == 'Runtime Log':
-            self.Apply_BTN.setDisabled(True)
-            log = open(os.path.join(pathname[0], 'nexon_runtime.log')).read()
-            self.hostsTextEdit.setPlainText(log)
+            try:
+                self.Apply_BTN.setDisabled(True)
+                log = open(os.path.join(pathname[0], 'nexon_runtime.log')).read()
+                self.logViewer.setPlainText(log)
+            except:
+                self.logViewer.setPlainText('No Runtime log found')
 
         if text == 'Runtime Debug':
-            self.Apply_BTN.setDisabled(True)
-            log = open(os.path.join(pathname[0], 'nexon_runtime_debug.log')).read()
-            self.hostsTextEdit.setPlainText(log)
+            try:
+                self.Apply_BTN.setDisabled(True)
+                log = open(os.path.join(pathname[0], 'nexon_runtime_debug.log')).read()
+                self.logViewer.setPlainText(log)
+            except:
+                self.logViewer.setPlainText('No Runtime Debug log found')
 
         if text == 'Updater Debug':
-            self.Apply_BTN.setDisabled(True)
-            log = open(os.path.join(pathname[0], 'nexon_updater_debug.log')).read()
-            self.hostsTextEdit.setPlainText(log)
+            try:
+                self.Apply_BTN.setDisabled(True)
+                log = open(os.path.join(pathname[0], 'nexon_updater_debug.log')).read()
+                self.logViewer.setPlainText(log)
+            except:
+                self.logViewer.setPlainText('No Updater Debug log found')
 
-        if text == 'NLT Debug Log':
-            log = open(logLoc).read()
-            self.hostsTextEdit.setPlainText(log)
+        if text == 'NLT Debug':
+            try:
+                log = open(logLoc).read()
+                self.logViewer.setPlainText(log)
+            except:
+                self.logViewer.setPlainText('No NLT Debug log found')
 
 
     def ApplyTextToFile(self, index, text):
-        global showAbout
-        if index == 0:
-            with open(hostsLoc, 'w') as hostFile:
-                hostFile.write(str(text.toPlainText()))
-            hostFile.close()
-            self.DisplayFile('Host Settings')
+            global showAbout
+            if index == 0:
+                with open(hostsLoc, 'w') as hostFile:
+                    hostFile.write(str(text.toPlainText()))
+                hostFile.close()
+                self.DisplayFile('Host Settings')
 
-        if index == 1:
-            settingsPath = os.path.join(pathname[0], defaultConf)
-            with open(settingsPath, 'w') as settingsFile:
-                settingsFile.write(str(text.toPlainText()))
-            settingsFile.close()
-            self.DisplayFile('Settings.conf')
+            if index == 1:
+                settingsPath = os.path.join(pathname[0], defaultConf)
+                with open(settingsPath, 'w') as settingsFile:
+                    settingsFile.write(str(text.toPlainText()))
+                settingsFile.close()
+                self.DisplayFile('Settings.conf')
 
-        if index == 5:
-            aboutContent = open(aboutLoc).read()
-            self.hostsTextEdit.setPlainText(aboutContent)
+            if index == 2:
+                eulapath = os.path.join(appdataPath, eulafile)
+                with open(eulapath, 'w') as eulaDbFile:
+                    eulaDbFile.write(str(text.toPlainText()))
+                eulaDbFile.close()
+                self.DisplayFile('EULA.db')
+
+            if index == 5:
+                aboutContent = open(aboutLoc).read()
+                self.hostsTextEdit.setPlainText(aboutContent)
 
 
-    def DisplayEditor(self, editor, form, text, drop, button):
+    def DisplayTabs(self, editor, form, label):
         ##### Enable and display text editor #####
         global advCheck
         advCheck = not advCheck
         if advCheck == True:
             editor.setDisabled(False)
             editor.setVisible(True)
-            text.setVisible(True)
-            form.resize(354, 500)
-            drop.setDisabled(False)
-            button.setDisabled(False)
+            form.setMaximumSize(354,556)
+            form.setMinimumSize(354,556)
+            form.resize(354, 556)
+            label.setVisible(True)
         if advCheck == False:
             editor.setDisabled(True)
             editor.setVisible(False)
-            text.setVisible(False)
-            form.resize(354, 200)
-            drop.setDisabled(True)
-            button.setDisabled(True)
+            form.setMaximumSize(354,189)
+            form.setMinimumSize(354,189)
+            form.resize(354, 189)
+            label.setVisible(False)
 
     def DisableTestButton(self, button):
         global extCheck
@@ -780,8 +947,34 @@ class Ui_Form(QtGui.QWidget):
         self.SetEnvLabel(destName)
         logging.info('!!!!!!!!!! Launcher now on Live !!!!!!!!!!')
 
-    def OpenLocation(self):
-        os.startfile(pathname[0])
+    def OpenLocation(self, text):
+        if text == 'Install Location':
+            try:
+                os.startfile(pathname[0])
+            except:
+                logging.info('unable to open Install Location')
+
+        if text == 'APPDATA Folder':
+            try:
+                os.startfile(appdataPath)
+            except:
+                logging.info('unable to open APPDATA Folder')
+
+    def RunDFC(self):
+
+        try:
+            from subprocess import Popen
+            Popen(dfcLoc, creationflags=subprocess.CREATE_NEW_CONSOLE)
+            #file.communicate()
+        except:
+            logging.info('Unable to load Dummy File Creator.  Ensure it can be found in '+ dfcLoc)
+
+    def SpaceLabelDynamic(self, label):
+        logging.info('# Scanning HD Space #')
+        freeSpace = psutil.disk_usage('/')
+        convertedSpace= freeSpace.free / 1024 / 1024 / 1024
+        label.setText(str(convertedSpace))
+
 
     def RestartLauncher(self):
         logging.info('Restarting Launcher')
